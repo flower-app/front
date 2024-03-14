@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/front-end/static/css/main.6246a958.css",
-    "main.js": "/front-end/static/js/main.f683f333.js",
+    "main.js": "/front-end/static/js/main.45a1c75f.js",
     "static/media/header.jpg": "/front-end/static/media/header.464be4c95040075211ec.jpg",
     "static/media/Outfit-VariableFont_wght.ttf": "/front-end/static/media/Outfit-VariableFont_wght.00c2ed1a3bf798b0da27.ttf",
     "static/media/SedanSC-Regular.ttf": "/front-end/static/media/SedanSC-Regular.3eeb672805f1b8adae1d.ttf",
@@ -28,10 +28,10 @@
     "static/media/facebook.svg": "/front-end/static/media/facebook.984d5bad6601bf5c6c36.svg",
     "index.html": "/front-end/index.html",
     "main.6246a958.css.map": "/front-end/static/css/main.6246a958.css.map",
-    "main.f683f333.js.map": "/front-end/static/js/main.f683f333.js.map"
+    "main.45a1c75f.js.map": "/front-end/static/js/main.45a1c75f.js.map"
   },
   "entrypoints": [
     "static/css/main.6246a958.css",
-    "static/js/main.f683f333.js"
+    "static/js/main.45a1c75f.js"
   ]
 }
