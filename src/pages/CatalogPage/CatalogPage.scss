@@ -1,0 +1,18 @@
+@import "../../styles/typography.scss";
+
+.catalog-page {
+  &__title {
+    @extend %h2;
+  }
+
+  &__content {
+
+  }
+
+  &__catalog {
+    display: grid;
+      grid-template-columns: repeat(3, 1fr); 
+      grid-template-rows: repeat(3, auto);
+      gap: 65px;
+  }
+}

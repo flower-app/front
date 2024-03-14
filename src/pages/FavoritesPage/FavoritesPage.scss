@@ -1,0 +1,11 @@
+@import "../../styles/typography.scss";
+
+.favorites-page {
+  &__top {
+    margin-bottom: 55px;
+  }
+
+  &__title {
+    @extend %h2;
+  }
+}
