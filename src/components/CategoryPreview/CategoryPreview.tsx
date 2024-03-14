@@ -48,7 +48,7 @@ export const CategoryPreview: React.FC<Props> = ({isFirstBlock, title, margin, r
           </div>
 
           <div className="category-preview__btn">
-            <Link to='catalog' className="button button--with-arrow">
+            <Link to='/catalog' className="button button--with-arrow">
               See catalog <span className="button__arrow"></span>
             </Link>
           </div>
