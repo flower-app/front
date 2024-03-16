@@ -1,6 +1,7 @@
 import React from 'react'
 import { HashRouter, Route, Routes } from 'react-router-dom'
 import App from './App'
+import { ScrollToTop } from './components/ScrollToTop'
 import { PathnameProvider } from './helpers/PathnameContext'
 import { AboutUsPage } from './pages/AboutUsPage'
 import AuthorizePage from './pages/AuthorizePage/AuthorizePage'
@@ -15,6 +16,7 @@ import { ProductPage } from './pages/ProductPage'
 export default function () {
   return (
     <HashRouter>
+      <ScrollToTop />
       <PathnameProvider>
         <Routes>
           <Route path='/' element={<App />}>

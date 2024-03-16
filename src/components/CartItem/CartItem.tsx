@@ -16,7 +16,7 @@ export const CartItem = () => {
       <div className="cart-item__info">
         <div className="cart-item__top">
           <Link
-            to={`catalog/${product.product_name_Id}`}
+            to={`/catalog/${product.product_name_Id}`}
             className="cart-item__link"
           >
             <h3 className="cart-item__title">
