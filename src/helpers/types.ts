@@ -12,10 +12,14 @@ export type Product = {
   img: string;
 };
 
-export type CartProperty = {
-  productId: number;
+export type CartItem = {
+  id: number;
+  name: string;
   price: number;
+  discountDeducted: number;
   amount: number;
+  img: string;
+  product_name_Id: string;
 };
 
 export type Color = "red" | "yellow" | "pink" | "white" | "purple";

@@ -33,10 +33,7 @@ export function Footer() {
           </li>
         </ul>
         <div className="footer__links">
-          {/* <div> */}
-            {/* <p className="footer__nav-title">Categories</p> */}
             <Nav isFooter={true} />
-          {/* </div> */}
           <address className="footer__address">
             <a
               href="tel:+38066578398"

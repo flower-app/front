@@ -22,14 +22,20 @@ export const Nav: React.FC<Props> = ({isFooter}) => {
         }
       )}>
         <li className="nav__item">
-          <NavLink to="home" className={({ isActive }) => classNames(
+          <NavLink
+            to="home"
+            className={({ isActive }) => classNames(
             'nav__link',
             {
               'nav__link--active': isActive,
               'nav__link--footer': isFooter,
               'nav__link--active--white': isHomePage,
             },
-          )}>Home</NavLink>
+            )}
+            onClick={() => window.scrollTo(0, 0)}
+          >
+            Home
+          </NavLink>
         </li>
         <li className="nav__item">
           <NavLink to="catalog" className={({ isActive }) => classNames(

@@ -1,44 +1,68 @@
 import React from 'react';
 import "./CartItem.scss";
-import { product } from '../../helpers/sample';
 import { Link } from 'react-router-dom';
+import { CartItem as CartItemType } from '../../helpers/types';
+import { useAppDispatch } from '../../app/hooks';
+import { actions } from '../../features/cartItemsSlice';
 
-export const CartItem = () => {
+type Props = {
+  item: CartItemType,
+}
+
+
+export const CartItem: React.FC<Props> = ({ item }) => {
+  const dispatch = useAppDispatch();
+
+
+  const changeQuantityHandler = (value: number) => {
+    dispatch(actions.changeItem({
+      ...item,
+      amount: item.amount + value,
+    }))
+  };
+
+  const removeHandler = () => {
+    dispatch(actions.remove(item.id));
+  };
+
   return (
     <article className="cart-item">
       <div className="cart-item__img-container">
-        <img 
-          src={product.img} 
-          alt={product.name} 
-          className="cart-item__img" 
+        <img
+          src={item.img}
+          alt={item.name}
+          className="cart-item__img"
         />
       </div>
       <div className="cart-item__info">
         <div className="cart-item__top">
           <Link
-            to={`/catalog/${product.product_name_Id}`}
+            to={`/catalog/${item.product_name_Id}`}
             className="cart-item__link"
           >
             <h3 className="cart-item__title">
-              {product.name}
+              {item.name}
             </h3>
           </Link>
           <div className="cart-item__price">
-            {`$${product.price}`}
+            {`$${(item.price * item.amount).toFixed(2)}`}
           </div>
         </div>
         <div className="cart-item__bottom">
           <div className="cart-item__quantity">
-            Quantity 
+            Quantity
             <div className="cart-item__buttons">
-              <button 
+              <button
                 className='cart-item__min-btn'
+                onClick={() => changeQuantityHandler(-1)}
+                disabled={item.amount === 1}
               >
                 -
               </button>
-              1
-              <button 
+              {item.amount}
+              <button
                 className='cart-item__plus-btn'
+                onClick={() => changeQuantityHandler(1)}
               >
                 +
               </button>
@@ -47,6 +71,7 @@ export const CartItem = () => {
           <button
             aria-label="Remove item"
             className="cart-item__remove-btn"
+            onClick={removeHandler}
           ></button>
         </div>
       </div>

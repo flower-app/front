@@ -1,7 +1,12 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Product } from '../../helpers/types';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions } from '../../features/cartItemsSlice';
+import { actions as favoritesActions } from '../../features/favoritesSlice';
+import { CartItem, Product } from '../../helpers/types';
+import { CartButton } from '../CartButton';
+import { ProductImage } from '../ProductImage';
 import "./ProductCard.scss";
 
 type Props = {
@@ -10,28 +15,14 @@ type Props = {
 }
 
 export const ProductCard: React.FC<Props> = ({ isSmall, product }) => {
+  const computedPrice = (product.price - (product.price * (product.discount / 100))).toFixed(2);
+
   return (
     <article className={classNames(
       'product-card',
       { 'product-card--small': isSmall }
     )}>
-      <div
-        className={classNames(
-          'product-card__img-container',
-          { 'product-card__img-container--small': isSmall }
-        )}
-      >
-        <img
-          src={product.img}
-          alt={product.name} className="product-card__img"
-        />
-
-        <button className={classNames(
-          'product-card__fav-btn',
-          { 'product-card__fav-btn--active': false },
-        )}></button>
-
-      </div>
+      <ProductImage isSmall={isSmall} product={product} />
       <div className="product-card__summary">
         <Link
           to={`/catalog/${product.product_name_Id}`}
@@ -48,19 +39,11 @@ export const ProductCard: React.FC<Props> = ({ isSmall, product }) => {
           "product-card__price",
           { "product-card__price--small": isSmall }
         )}>
-          {`$${product.price}`}
+          {`$${computedPrice}`}
         </p>
       </div>
       <div className="product-card__buttons">
-        <button
-          className={classNames(
-            "button button--cart",
-            {
-              "button--cart--active": false,
-              "button--cart--small": isSmall,
-            }
-          )}
-        ></button>
+        <CartButton isSmall={isSmall} product={product} icon={true} />
         <Link
           to={`/catalog/${product.product_name_Id}`}
 

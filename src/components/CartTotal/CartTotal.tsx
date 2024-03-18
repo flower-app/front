@@ -1,30 +1,34 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useAppSelector } from '../../app/hooks';
 import "./CartTotal.scss";
 
 export const CartTotal = () => {
   const location = useLocation();
   const isCartPage = location.pathname === '/cart';
+
+  
+  const cartItems = useAppSelector(state => state.cartItems);
+  
+  const saleAmount = cartItems
+    .map(item => item.discountDeducted * item.amount)
+    .reduce((sum, i) => sum + i, 0);
+  
+  const totalAmount = cartItems
+    .map(item => item.price * item.amount)
+    .reduce((sum, i) => sum + i, 0);
+
   return (
     <div className="cart-total">
       <h3 className="cart-total__title">Total</h3>
       <div className="cart-total__content">
         <ul className="cart-total__items-list">
-          {/* {cartItems.map(item => {(
-                <li className="cart-total__li">
-                  <p className="cart-total__item-title">{item.name}</p>
-                  <span className="cart-total__item-price">{item.price}</span>
-                </li>
-              )})} */}
-          <li className="cart-total__li">
-            <p className="cart-total__item-title">Sweet Sunshine</p>
-            <span className="cart-total__price">$94</span>
-          </li>
-
-          <li className="cart-total__li">
-            <p className="cart-total__item-title">Sweet Sunshine</p>
-            <span className="cart-total__price">$94</span>
-          </li>
+          {cartItems.map(item => (
+            <li className="cart-total__li">
+              <p className="cart-total__item-title">{item.name}</p>
+              <span className="cart-total__price">${(item.price * item.amount).toFixed(2)}</span>
+            </li>
+          ))}
         </ul>
         <div className="cart-total__separator"></div>
         <ul className="cart-total__description">
@@ -32,10 +36,10 @@ export const CartTotal = () => {
             Delivery<span className="cart-total__delivery">Free</span>
           </li>
           <li className="cart-total__li">
-            Sale<span className="cart-total__price">$84</span>
+            Sale<span className="cart-total__price">${saleAmount.toFixed(2)}</span>
           </li>
           <li className="cart-total__li">
-            Total<span className="cart-total__price">$445</span>
+            Total<span className="cart-total__price">${totalAmount.toFixed(2)}</span>
           </li>
         </ul>
         {isCartPage && (

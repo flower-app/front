@@ -1,7 +1,7 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { product } from '../../helpers/sample';
+import { Product } from '../../helpers/types';
 import { ProductCard } from '../ProductCard/ProductCard';
 import "./CategoryPreview.scss";
 
@@ -10,10 +10,10 @@ type Props = {
   title: string;
   margin: string;
   reverse: boolean;
+  products: Product[];
 }
 
-export const CategoryPreview: React.FC<Props> = ({isFirstBlock, title, margin, reverse }) => {
-
+export const CategoryPreview: React.FC<Props> = ({isFirstBlock, title, margin, reverse, products }) => {
   return (
     <div className="category-preview">
       <div
@@ -42,9 +42,17 @@ export const CategoryPreview: React.FC<Props> = ({isFirstBlock, title, margin, r
               { 'category-preview__gallery--reverse': reverse }
             )}
           >
-            <ProductCard product={product} />
-            <ProductCard isSmall={true} product={product} />
-            <ProductCard isSmall={true} product={product} />
+            {products
+              .map((currProduct, index) => {
+                return (
+                  <React.Fragment key={currProduct.id}>
+                    {(index === 0)
+                      ? <ProductCard product={currProduct} />
+                      : <ProductCard isSmall={true} product={currProduct}/>}
+                  </React.Fragment>
+                )
+              })
+            }
           </div>
 
           <div className="category-preview__btn">

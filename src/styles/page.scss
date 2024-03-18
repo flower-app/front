@@ -2,6 +2,7 @@
   &__body {
     @extend %body-text;
     background-color: $bg-color;
+    scroll-behavior: smooth;
   }
   
   &__app {

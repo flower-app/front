@@ -5,14 +5,20 @@
     @extend %h2;
   }
 
-  &__content {
+  &__top {
+    margin-bottom: 55px;
+  }
 
+  &__content {
   }
 
   &__catalog {
+    // display: flex;
+    // flex-wrap: wrap;
     display: grid;
-      grid-template-columns: repeat(3, 1fr); 
-      grid-template-rows: repeat(3, auto);
-      gap: 65px;
+    grid-template-columns: repeat(3, auto);
+    grid-template-rows: repeat(3 auto);
+    gap: 65px;
+    margin-bottom: 64px;
   }
 }
