@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/front-end/static/css/main.1653599b.css",
-    "main.js": "/front-end/static/js/main.969d1473.js",
+    "main.css": "/front-end/static/css/main.927d89ac.css",
+    "main.js": "/front-end/static/js/main.79f937ec.js",
     "static/media/header.jpg": "/front-end/static/media/header.464be4c95040075211ec.jpg",
     "static/media/Outfit-VariableFont_wght.ttf": "/front-end/static/media/Outfit-VariableFont_wght.00c2ed1a3bf798b0da27.ttf",
     "static/media/SedanSC-Regular.ttf": "/front-end/static/media/SedanSC-Regular.3eeb672805f1b8adae1d.ttf",
@@ -27,11 +27,11 @@
     "static/media/arrow-right.svg": "/front-end/static/media/arrow-right.aac0c374a1e14a4f2f44.svg",
     "static/media/facebook.svg": "/front-end/static/media/facebook.984d5bad6601bf5c6c36.svg",
     "index.html": "/front-end/index.html",
-    "main.1653599b.css.map": "/front-end/static/css/main.1653599b.css.map",
-    "main.969d1473.js.map": "/front-end/static/js/main.969d1473.js.map"
+    "main.927d89ac.css.map": "/front-end/static/css/main.927d89ac.css.map",
+    "main.79f937ec.js.map": "/front-end/static/js/main.79f937ec.js.map"
   },
   "entrypoints": [
-    "static/css/main.1653599b.css",
-    "static/js/main.969d1473.js"
+    "static/css/main.927d89ac.css",
+    "static/js/main.79f937ec.js"
   ]
 }
