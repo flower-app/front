@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/front-end/static/css/main.927d89ac.css",
-    "main.js": "/front-end/static/js/main.79f937ec.js",
+    "main.css": "/front-end/static/css/main.1c121689.css",
+    "main.js": "/front-end/static/js/main.193cb753.js",
     "static/media/header.jpg": "/front-end/static/media/header.464be4c95040075211ec.jpg",
     "static/media/Outfit-VariableFont_wght.ttf": "/front-end/static/media/Outfit-VariableFont_wght.00c2ed1a3bf798b0da27.ttf",
     "static/media/SedanSC-Regular.ttf": "/front-end/static/media/SedanSC-Regular.3eeb672805f1b8adae1d.ttf",
@@ -21,17 +21,20 @@
     "static/media/search.svg": "/front-end/static/media/search.dc66c2306a1872a75120.svg",
     "static/media/email.svg": "/front-end/static/media/email.2a623c73db53398c50ec.svg",
     "static/media/password.svg": "/front-end/static/media/password.a068d25ab373ba13a81a.svg",
+    "static/media/cross.svg": "/front-end/static/media/cross.207a6af378e93edb000f.svg",
     "static/media/telegram.svg": "/front-end/static/media/telegram.e15472b166263276393c.svg",
     "static/media/heart-btn-fill.svg": "/front-end/static/media/heart-btn-fill.e20bfeb7983bf26ed2da.svg",
     "static/media/arrow-right-red.svg": "/front-end/static/media/arrow-right-red.f56ecf8e63ba740aee58.svg",
     "static/media/arrow-right.svg": "/front-end/static/media/arrow-right.aac0c374a1e14a4f2f44.svg",
+    "static/media/dropdown.svg": "/front-end/static/media/dropdown.592d3d1eb07065855c3d.svg",
+    "static/media/dropdown-up.svg": "/front-end/static/media/dropdown-up.782efbdec3843ebc2053.svg",
     "static/media/facebook.svg": "/front-end/static/media/facebook.984d5bad6601bf5c6c36.svg",
     "index.html": "/front-end/index.html",
-    "main.927d89ac.css.map": "/front-end/static/css/main.927d89ac.css.map",
-    "main.79f937ec.js.map": "/front-end/static/js/main.79f937ec.js.map"
+    "main.1c121689.css.map": "/front-end/static/css/main.1c121689.css.map",
+    "main.193cb753.js.map": "/front-end/static/js/main.193cb753.js.map"
   },
   "entrypoints": [
-    "static/css/main.927d89ac.css",
-    "static/js/main.79f937ec.js"
+    "static/css/main.1c121689.css",
+    "static/js/main.193cb753.js"
   ]
 }
