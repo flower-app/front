@@ -12,6 +12,22 @@ export type Product = {
   img: string;
 };
 
+export type ProductFromServer = {
+  id: number;
+  colorIds: number[];
+  typeIds: number[];
+  seasonIds: number[];
+  containsIds: number[];
+  discountsIds: number[];
+  sizesIds: number[];
+  name: string;
+  product_name_Id: string;
+  isbn: string;
+  price: number;
+  description: string;
+  coverImage: string;
+};
+
 export type CartItem = {
   id: number;
   name: string;
@@ -21,6 +37,34 @@ export type CartItem = {
   img: string;
   product_name_Id: string;
 };
+
+export type User = {
+  id: number | null;
+  email: string | null;
+  numberPhone: string | null;
+  firstName: string | null;
+  lastName: string | null;
+};
+
+export type DescriptionData = {
+  id: number;
+  name: "string";
+  description: "string";
+};
+
+export type CatalogPageParams = {
+  page: number;
+  sort?: string;
+}
+
+export enum PropertyType {
+  type = "product-type",
+  size = "product-size",
+  season = "product-season",
+  discount = "product-discount",
+  contain = "product-contain",
+  color = "product-color",
+}
 
 export type Color = "red" | "yellow" | "pink" | "white" | "purple";
 

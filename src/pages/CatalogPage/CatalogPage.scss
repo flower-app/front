@@ -1,6 +1,10 @@
 @import "../../styles/typography.scss";
+@import "../../styles/vars.scss";
+
 
 .catalog-page {
+  padding-bottom: 66px;
+
   &__title {
     @extend %h2;
   }
@@ -12,13 +16,48 @@
   &__content {
   }
 
+  &__filtres {
+    display: flex;
+    margin-bottom: 40px;
+    // gap: 16px;
+  }
+
   &__catalog {
     // display: flex;
     // flex-wrap: wrap;
     display: grid;
-    grid-template-columns: repeat(3, auto);
-    grid-template-rows: repeat(3 auto);
+    grid-template-columns: repeat(3, min-content);
+    // grid-template-rows: repeat(3 auto);
     gap: 65px;
     margin-bottom: 64px;
+  }
+
+  &__reset-btn {
+    margin-left: 20px;
+    padding-inline: 10px;
+    background-color: $bg-color;
+    border: 1px solid $main-red;
+    border-radius: 10px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-position: bottom 0 right 8px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    z-index: 0;
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 20.16px;
+    text-align: left;
+    color: $main-red;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    &:hover {
+          background-color: $dark-pink;
+          color: $bg-color;
+
+    }
   }
 }

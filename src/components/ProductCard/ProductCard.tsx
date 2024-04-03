@@ -1,21 +1,22 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions } from '../../features/cartItemsSlice';
+import { init } from '../../features/currentProductSlice';
 import { actions as favoritesActions } from '../../features/favoritesSlice';
-import { CartItem, Product } from '../../helpers/types';
+import { getPropertyValue } from '../../helpers/api';
+import { CartItem, Product, ProductFromServer } from '../../helpers/types';
 import { CartButton } from '../CartButton';
 import { ProductImage } from '../ProductImage';
 import "./ProductCard.scss";
 
 type Props = {
   isSmall?: boolean,
-  product: Product,
+  product: ProductFromServer,
 }
 
 export const ProductCard: React.FC<Props> = ({ isSmall, product }) => {
-  const computedPrice = (product.price - (product.price * (product.discount / 100))).toFixed(2);
 
   return (
     <article className={classNames(
@@ -27,6 +28,7 @@ export const ProductCard: React.FC<Props> = ({ isSmall, product }) => {
         <Link
           to={`/catalog/${product.product_name_Id}`}
           className="product-card__title"
+          state={{ id: product.id }}
         >
           <h3 className={classNames(
             "product-card__h3",
@@ -39,7 +41,7 @@ export const ProductCard: React.FC<Props> = ({ isSmall, product }) => {
           "product-card__price",
           { "product-card__price--small": isSmall }
         )}>
-          {`$${computedPrice}`}
+          ${product.price.toFixed(2)}
         </p>
       </div>
       <div className="product-card__buttons">
@@ -51,6 +53,7 @@ export const ProductCard: React.FC<Props> = ({ isSmall, product }) => {
             "button button--with-arrow button--white",
             { "button--small": isSmall }
           )}
+          state={{ id: product.id }}
         >
           More details
           <span

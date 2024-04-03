@@ -2,7 +2,7 @@ import React from 'react';
 import { useAppSelector } from '../../app/hooks';
 import { Breadcrumbs } from '../../components/Breadcrumbs';
 import { ProductCard } from '../../components/ProductCard';
-import { Product } from '../../helpers/types';
+import { Product, ProductFromServer } from '../../helpers/types';
 import "./FavoritesPage.scss";
 
 export default function FavoritesPage() {
@@ -17,7 +17,7 @@ export default function FavoritesPage() {
         <Breadcrumbs />
       </div>
       <div className="favorites-page__catalog">
-        {favorites.map((product: Product) => (
+        {favorites.map((product: ProductFromServer) => (
           <React.Fragment key={product.id}>
             <ProductCard product={product} />
           </React.Fragment>

@@ -2,9 +2,11 @@ import React from 'react'
 import { HashRouter, Route, Routes } from 'react-router-dom'
 import App from './App'
 import { ScrollToTop } from './components/ScrollToTop'
-import { PathnameProvider } from './helpers/PathnameContext'
+import { ContextProvider } from './helpers/globalContext'
 import { AboutUsPage } from './pages/AboutUsPage'
 import AuthorizePage from './pages/AuthorizePage/AuthorizePage'
+import { LogInPage } from './pages/AuthorizePage/LogInPage'
+import { SingInPage } from './pages/AuthorizePage/SingInPage'
 import { CartPage } from './pages/CartPage'
 import { CatalogPage } from './pages/CatalogPage'
 import CheckOutPage from './pages/CheckOutPage/CheckOutPage'
@@ -17,14 +19,14 @@ export default function () {
   return (
     <HashRouter>
       <ScrollToTop />
-      <PathnameProvider>
+      <ContextProvider>
         <Routes>
           <Route path='/' element={<App />}>
             <Route index element={<HomePage />} />
             <Route path='home' element={<HomePage />} />
             <Route path='catalog'>
               <Route index element={<CatalogPage />} />
-              <Route path=':product_name_Id' element={<ProductPage/>} />
+              <Route path=':product_name_Id' element={<ProductPage />} />
             </Route>
             <Route path="about-us" element={<AboutUsPage />} />
             <Route path="favorites" element={<FavoritesPage />} />
@@ -32,11 +34,15 @@ export default function () {
               <Route index element={<CartPage />} />
               <Route path="check-out" element={<CheckOutPage />} />
             </Route>
-            <Route path="profile" element={<AuthorizePage />} />
+            <Route path="profile" element={<AuthorizePage />} >
+              <Route index element={<SingInPage />} />
+              <Route path="sign-in" element={<SingInPage />} />
+              <Route path="log-in" element={<LogInPage />} />
+            </Route>
             <Route path="*" element={<ErrorPage />} />
           </Route>
         </Routes>
-      </PathnameProvider>
+      </ContextProvider>
     </HashRouter>
   )
 }

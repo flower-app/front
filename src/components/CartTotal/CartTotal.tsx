@@ -24,7 +24,7 @@ export const CartTotal = () => {
       <div className="cart-total__content">
         <ul className="cart-total__items-list">
           {cartItems.map(item => (
-            <li className="cart-total__li">
+            <li className="cart-total__li" key={item.id}>
               <p className="cart-total__item-title">{item.name}</p>
               <span className="cart-total__price">${(item.price * item.amount).toFixed(2)}</span>
             </li>

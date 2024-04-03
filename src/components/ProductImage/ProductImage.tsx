@@ -2,11 +2,11 @@ import classNames from 'classnames'
 import React from 'react'
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions } from '../../features/favoritesSlice';
-import { Product } from '../../helpers/types';
+import { Product, ProductFromServer } from '../../helpers/types';
 
 type Props = {
   isSmall?: boolean,
-  product: Product,
+  product: ProductFromServer,
 }
 
 export const ProductImage: React.FC<Props> = ({ isSmall, product }) => {
@@ -29,7 +29,7 @@ export const ProductImage: React.FC<Props> = ({ isSmall, product }) => {
       )}
     >
       <img
-        src={product.img}
+        src={product.coverImage}
         alt={product.name} className="product-card__img"
       />
 

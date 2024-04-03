@@ -1,11 +1,11 @@
 import classNames from 'classnames';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { PathnameContext } from '../../helpers/PathnameContext';
+import { globalContext } from '../../helpers/globalContext';
 import "./Logo.scss";
 
 export default function Logo() {
-  const { isHomePage } = useContext(PathnameContext);
+  const { isHomePage } = useContext(globalContext);
 
   return (
     <div className={classNames(
