@@ -4,6 +4,7 @@ import cartItemsReducer from "../features/cartItemsSlice";
 import currentProductReduser from "../features/currentProductSlice";
 import allProductsReduser from "../features/allProductsSlice";
 import userReducer from "../features/userSlice";
+import cartReducer from "../features/cartSlice";
 
 import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from "redux-persist";
 import storage from "redux-persist/lib/storage";
@@ -18,6 +19,7 @@ import { combineReducers } from "redux";
     products: allProductsReduser,
     currentProduct: currentProductReduser,
     user: userReducer,
+    cart: cartReducer,
   });
   
   const persistConfig = {
@@ -41,4 +43,3 @@ export let persistor = persistStore(store);
   
   export type RootState = ReturnType<typeof store.getState>;
   export type AppDispatch = typeof store.dispatch;
-  

@@ -9,9 +9,8 @@ import { globalContext } from '../../helpers/globalContext';
 import "./CatalogPage.scss";
 
 import { Loader } from '../../components/Loader';
-import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Select } from '../../components/Select';
-import { ProductFromServer, PropertyType } from '../../helpers/types';
+import { PropertyType } from '../../helpers/types';
 
 export enum SortByPriceParams {
   None = '',
@@ -27,12 +26,6 @@ export function CatalogPage() {
   const [sortByPrice, setSortByPrice] = useState(SortByPriceParams.None)
   const [currentPage, setCurrentPage] = useState(0);
   const { query, setQuery } = useContext(globalContext);
-
-  // useEffect(() => {
-  //   if (!query) {
-  //     dispatch(init({ page: currentPage, sort: sortByPrice }));
-  //   }
-  // }, []);
 
   useEffect(() => {
     setCurrentPage(0)
@@ -64,44 +57,44 @@ export function CatalogPage() {
       </div>
       <div className="catalog-page__content">
         <div className="catalog-page__filtres">
-            <Select
-              label="Color"
-              property={PropertyType.color}
-              searchName="colors"
-              setFiltersUsed={setFiltersUsed}
-            />
-            <Select
-              label="Type"
-              property={PropertyType.type}
-              searchName="types"
-              setFiltersUsed={setFiltersUsed}
-            />
-            <Select
-              label="Price"
-              setSortByPrice={setSortByPrice}
-              propertyList={Object.entries(SortByPriceParams)}
-              setFiltersUsed={setFiltersUsed}
-            />
-            <Select
-              label="Size"
-              property={PropertyType.size}
-              searchName="sizes"
-              setFiltersUsed={setFiltersUsed}
-            />
-            <Select
-              label="Season"
-              property={PropertyType.season}
-              searchName="seasons"
-              setFiltersUsed={setFiltersUsed}
-            />
-            {(filtersUsed || query) && (
+          <Select
+            label="Color"
+            property={PropertyType.color}
+            searchName="colors"
+            setFiltersUsed={setFiltersUsed}
+          />
+          <Select
+            label="Type"
+            property={PropertyType.type}
+            searchName="types"
+            setFiltersUsed={setFiltersUsed}
+          />
+          <Select
+            label="Price"
+            setSortByPrice={setSortByPrice}
+            propertyList={Object.entries(SortByPriceParams)}
+            setFiltersUsed={setFiltersUsed}
+          />
+          <Select
+            label="Size"
+            property={PropertyType.size}
+            searchName="sizes"
+            setFiltersUsed={setFiltersUsed}
+          />
+          <Select
+            label="Season"
+            property={PropertyType.season}
+            searchName="seasons"
+            setFiltersUsed={setFiltersUsed}
+          />
+          {(filtersUsed || query) && (
             <button
               onClick={onResetFilters}
               className="catalog-page__reset-btn"
             >
               Reset
             </button>
-            )}
+          )}
         </div>
 
         {isLoading && <Loader />}
@@ -119,11 +112,11 @@ export function CatalogPage() {
                 </React.Fragment>
               ))}
             </div>
-              {(!filtersUsed && !query) && (
-                <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} />
-              )}
+            {(!filtersUsed && !query) && (
+              <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} />
+            )}
           </>)}
-        
+
         {!isLoading && !hasError && allProducts.length === 0 && (
           <p>There is no products with this params...</p>
         )}

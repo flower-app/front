@@ -1,11 +1,8 @@
+import { ServerLogInResponse } from "../pages/AuthorizePage/LogInPage";
 import { client } from "./fetchClient";
-import { DescriptionData, Product, ProductFromServer, PropertyType } from "./types";
+import { Cart, DescriptionData, LogInData, OrderFromServer, OrderInfo, ProductFromServer, PropertyType, User } from "./types";
 
 // const API_URL = "http://localhost:3000/api";
-
-// export function getProducts(): Promise<Product[]> {
-//   return fetch(`${API_URL}/products.json`).then(response => response.json());
-// }
 
 export function getAllProducts(): Promise<ProductFromServer[]> {
   return client.get<ProductFromServer[]>('products');
@@ -37,4 +34,56 @@ export function getPropertyValue(property: string, id: number = 0) {
 
 export function getDecsriptionData(title: string, id: number) {
   return client.get<DescriptionData>(`${title}/${id}`)
+}
+
+export const logIn = (data: LogInData) => {
+  return client.post<ServerLogInResponse>("auth/login", data);
+};
+
+export const signIn = (data: any) => {
+  return client.post<User>("auth/registration", data);
+};
+
+export const getCart = () => {
+  return client.get<Cart>("cart");
+};
+
+export const getUserByEmail = (userEmail: string) => {
+  const data = {
+    email: userEmail
+  }
+  return client.post<User>("users/by-email", data);
+}
+
+export const addToCart = (id: number, productQuantity: number) => {
+  const data = {
+  productId: id,
+  quantity: productQuantity,
+  }
+
+  return client.post("cart", data);
+}
+
+export const deleteCartItem = (cartItemId: number) => {
+  return client.delete("cart/cart-items/" + cartItemId);
+}
+
+export const updateCartItem = (cartItemId: number, newQuantity: number) => {
+  const data = {
+    quantity: newQuantity,
+  };
+  
+  return client.put("cart/cart-items/" + cartItemId, data);
+}
+
+export const createOrder = (data: OrderInfo) => {
+  return client.post("orders", data);
+}
+
+export const getAllPropertiesOptions = (property: string) => {
+  return client.get<DescriptionData[]>(property)
+}
+
+export const getOrders = () => {
+  return client.get<OrderFromServer[]>("orders");
 }

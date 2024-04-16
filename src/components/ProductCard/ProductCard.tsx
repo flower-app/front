@@ -1,12 +1,7 @@
 import classNames from 'classnames';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { actions } from '../../features/cartItemsSlice';
-import { init } from '../../features/currentProductSlice';
-import { actions as favoritesActions } from '../../features/favoritesSlice';
-import { getPropertyValue } from '../../helpers/api';
-import { CartItem, Product, ProductFromServer } from '../../helpers/types';
+import { ProductFromServer } from '../../helpers/types';
 import { CartButton } from '../CartButton';
 import { ProductImage } from '../ProductImage';
 import "./ProductCard.scss";
@@ -32,9 +27,9 @@ export const ProductCard: React.FC<Props> = ({ isSmall, product }) => {
         >
           <h3 className={classNames(
             "product-card__h3",
-            {'product-card__h3--small': isSmall}
+            { 'product-card__h3--small': isSmall }
           )}>
-          {product.name}
+            {product.name}
           </h3>
         </Link>
         <p className={classNames(

@@ -31,7 +31,6 @@ export const currentProductSlice = createSlice({
       (state: State, action: PayloadAction<ProductFromServer>) => {
         state.isLoading = false;
         state.currentProduct = action.payload;
-        // state.products.push(...action.payload);
       }
     );
     builder.addCase(init.rejected, (state: State) => {

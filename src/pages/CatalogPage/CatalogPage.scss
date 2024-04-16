@@ -1,7 +1,6 @@
 @import "../../styles/typography.scss";
 @import "../../styles/vars.scss";
 
-
 .catalog-page {
   padding-bottom: 66px;
 
@@ -13,21 +12,14 @@
     margin-bottom: 55px;
   }
 
-  &__content {
-  }
-
   &__filtres {
     display: flex;
     margin-bottom: 40px;
-    // gap: 16px;
   }
 
   &__catalog {
-    // display: flex;
-    // flex-wrap: wrap;
     display: grid;
     grid-template-columns: repeat(3, min-content);
-    // grid-template-rows: repeat(3 auto);
     gap: 65px;
     margin-bottom: 64px;
   }
@@ -55,9 +47,8 @@
     gap: 6px;
 
     &:hover {
-          background-color: $dark-pink;
-          color: $bg-color;
-
+      background-color: $dark-pink;
+      color: $bg-color;
     }
   }
 }

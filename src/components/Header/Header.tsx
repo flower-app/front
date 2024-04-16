@@ -1,29 +1,22 @@
 import classNames from 'classnames';
 import React, { useContext } from 'react';
 import { useEffect } from 'react';
-import { useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { globalContext } from '../../helpers/globalContext';
 import Logo from '../Logo/Logo';
 import { Nav } from '../Nav';
-import { debounce } from 'lodash';
 
 
 import './Header.scss';
-import { useAppDispatch } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getByQuery, init } from '../../features/allProductsSlice';
+import { Modal } from '../Modal';
 
 export function Header() {
-  const location = useLocation();
-  const { isHomePage, query, setQuery } = useContext(globalContext);
+  const { isHomePage, query, setQuery, setIsModalOpen } = useContext(globalContext);
+  const user = useAppSelector(state => state.user.user)
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
-  // const { searchValue, setSearchValue } = useContext()
-
-  // useEffect(() => {
-  //   setSearchValue('');
-  // }, [location.pathname]);
 
   useEffect(() => {
     if (!query.trim()) {
@@ -32,41 +25,31 @@ export function Header() {
   }, [query])
 
   const onKeyDownHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") 
+    if (e.key === "Enter")
       if (query.trim()) {
         const value = query.trim().replace(/ /gi, "%20");
         dispatch(getByQuery(value));
         navigate('/catalog', { state: { hasQuery: true } });
 
-        // console.log('Отправка запроса на сервер с значением:', query);
       } else {
         dispatch(init({ page: 1 }));
 
-    }
+      }
   }
 
-  // const sendRequest = debounce((searchValue: string) => {
-  //   if (searchValue.trim()) {
-  //     const value = searchValue.trim().replace(/ /gi, "%20");
-  //     dispatch(getByQuery(value));
-      
-  //     console.log('Отправка запроса на сервер с значением:', query);
-  //   } else {
-  //     dispatch(init({ page: 1 }));
-  //   }
-  // }, 500);
-
-  // const searchInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const value = e.target.value;
-  //   setQuery(value); 
-  //   sendRequest(value);
-  // };
+  const handleCartClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    if (!user?.email) {
+      e.preventDefault();
+      setIsModalOpen(true);
+    }
+  }
 
   return (
     <header className={classNames(
       "page__header header",
       { 'header--home-page': isHomePage },
     )}>
+      <Modal />
       <div className="header__wrapper">
         <div className="header__top">
           <Logo />
@@ -85,19 +68,6 @@ export function Header() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
             />
-            {/* <input
-              type="text"
-              className={classNames(
-                "input input--search",
-                {
-                  'input--search--white': isHomePage,
-                }
-              )}
-              onKeyDown={searchInputHandler}
-              placeholder="Search"
-              value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
-            /> */}
 
             <NavLink
               to="favorites"
@@ -131,6 +101,7 @@ export function Header() {
                   'top-bar__icon--cart--white': isHomePage,
                 }
               )}
+              onClick={handleCartClick}
             />
           </div>
         </div>

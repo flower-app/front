@@ -1,8 +1,5 @@
 import classNames from 'classnames';
-import React, { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { actions } from '../../features/allProductsSlice';
-// import { getProducts } from '../../helpers/api';
+import React from 'react';
 import "./Pagination.scss";
 
 const pages = [0, 1];
@@ -54,6 +51,6 @@ export const Pagination: React.FC<Props> = ({ currentPage, setCurrentPage }) => 
       >
         <div className="pagination__arrow-inside"></div>
       </button>
-      </div>
+    </div>
   );
 }

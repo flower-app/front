@@ -1,5 +1,4 @@
-import classNames from 'classnames';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { globalContext } from '../../helpers/globalContext';
 import "./Modal.scss";
@@ -7,6 +6,7 @@ import "./Modal.scss";
 
 export const Modal = () => {
   const { isModalOpen, setIsModalOpen } = useContext(globalContext);
+
 
   const closeHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const div = e.target as HTMLDivElement;
@@ -23,7 +23,7 @@ export const Modal = () => {
       <div className="modal__wrapper">
         <div className="modal__top">
           <p className="modal__text">
-            Please sign up or log in to your account to like this product.
+            Please sign up or log in to your account to use the shopping cart.
           </p>
           <button
             aria-label="close modal window"
@@ -33,10 +33,13 @@ export const Modal = () => {
         </div>
 
         <div className="modal__buttons">
-          <Link to="/profile/sign-in" className="button">
+          <Link to="/profile/sign-in" className="button"
+            onClick={() => setIsModalOpen(false)}>
             Sign Up
           </Link>
-          <Link to="/profile/log-in" className="button button--white">
+          <Link to="/profile/log-in" className="button button--white"
+            onClick={() => setIsModalOpen(false)}
+          >
             Log In
           </Link>
         </div>

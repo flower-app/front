@@ -4,6 +4,7 @@
 
 .check-out-page {
   padding-bottom: 62px;
+
   &__top {
     margin-bottom: 55px;
   }
@@ -42,7 +43,7 @@
   }
 
   &__legend-wrapper {
-        display: flex;
+    display: flex;
     width: 100%;
     padding-block: 14px;
     border-bottom: 1px solid transparent;
@@ -54,7 +55,7 @@
 
     &--disabled {
       border-bottom-color: $dark-pink;
-      color: $dark-pink
+      color: $dark-pink;
     }
   }
 
@@ -65,50 +66,67 @@
     font-weight: 500;
   }
 
-  &__edit-btn {
-    width: 10px;height: 10px;
-    justify-self:right;
+  &__check {
+    display: block;
+    width: 28px;
+    height: 29px;
+    background-image: url("../../img/icons/checkmark.svg");
+    background-size: cover;
+    margin-right: 10px;
   }
 
-  
+  &__edit-btn {
+    width: 28px;
+    height: 29px;
+    justify-self: right;
+    border: none;
+    background-color: $bg-color;
+    background-image: url("../../img/icons/edit.svg");
+    background-size: cover;
+  }
+
+  &__error {
+    color: red;
+  }
+
   /* Custom checkbox styles */
   &__remember-container {
-  position: relative;
-  cursor: pointer;
-  font-size: 20px;
-  padding-left: 24px;
-  display: flex;
-  align-items:flex-start;
+    position: relative;
+    cursor: pointer;
+    font-size: 20px;
+    padding-left: 24px;
+    display: flex;
+    align-items: flex-start;
   }
 
   /* Hidden default checkbox */
   &__remember-checkbox {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
   }
 
   &__remember-checkmark {
     display: inline-block;
     width: 20px;
     height: 20px;
-    border: 1px solid $secondary-red; 
+    border: 1px solid $secondary-red;
     border-radius: 3px;
     position: absolute;
     top: 4px;
     left: 0;
-    
+
     &::after {
-      content: '\2713'; // Unicode checkmark symbol
+      content: "\2713"; // Unicode checkmark symbol
       display: none;
       font-size: 16px;
       color: $secondary-red;
       position: absolute;
-      top: 50%; 
-      left: 50%; 
+      top: 50%;
+      left: 50%;
       transform: translate(-50%, -50%);
     }
-    
+
     /* Custom checkbox checked state */
     .check-out-page__remember-checkbox:checked + &::after {
       display: block;

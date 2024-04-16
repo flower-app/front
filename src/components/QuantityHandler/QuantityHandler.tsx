@@ -1,16 +1,6 @@
 import React from 'react'
 
 export const QuantityHandler = () => {
-  // const dispatch = useAppDispatch();
-
-
-  // const changeQuantityHandler = (value: number) => {
-  //   dispatch(actions.changeItem({
-  //     ...item,
-  //     amount: item.amount + value,
-  //   }))
-  // };
-
   return (
     <div className="quantity">
       Quantity

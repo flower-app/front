@@ -1,18 +1,16 @@
 import classNames from 'classnames'
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { actions as cartActions } from '../../features/cartItemsSlice';
-import { actions } from '../../features/userSlice';
+import { init } from '../../features/cartSlice';
+import { addToCart, deleteCartItem, getCart } from '../../helpers/api';
 import { globalContext } from '../../helpers/globalContext';
-import { CartItem, Product, ProductFromServer } from '../../helpers/types';
+import { ProductFromServer } from '../../helpers/types';
 import { Modal } from '../Modal';
-// import { User } from "../helpers/types";
 
 type Props = {
   isSmall?: boolean,
   amount?: number,
   product: ProductFromServer,
-  // product: Product,
   text?: boolean,
   icon?: boolean,
 }
@@ -20,44 +18,32 @@ type Props = {
 export const CartButton: React.FC<Props> = ({ amount = 1, product, isSmall, text, icon }) => {
   const user = useAppSelector(state => state.user.user);
   const { setIsModalOpen } = useContext(globalContext);
+  const cart = useAppSelector(state => state.cart.cart);
+
+  const [isAddedToCart, setIsAddedToCart] = useState(cart?.cartItems.some(item => item.productId === product.id) || false);
   const dispatch = useAppDispatch();
-  const cartItems = useAppSelector(state => state.cartItems);
-  // const computedPrice = (product.price - (product.price * (product.discount / 100))).toFixed(2);
-  // const discountAmount = product.price * (product.discount / 100);
-  const isAddedToCart = cartItems.some(currProduct => currProduct.id === product.id);
 
-  // useEffect(() => {
-  //   const user = {
-  //     id: 5,
-  //     email: 'null',
-  //     numberPhone: 'null',
-  //     firstName: 'null',
-  //     lastName: 'null',
-  //   }
-  //   dispatch(actions.set(user))
+  useEffect(() => {
+    setIsAddedToCart(cart?.cartItems.some(item => item.productId === product.id) || false)
+  }, [cart?.cartItems.length])
 
-  // }, [])
-
-  const addToCartHandle = () => {
-    if (!user) {
+  async function addToCartHandle() {
+    if (!user?.email) {
       setIsModalOpen(true);
       return;
     }
-    const cartItem: CartItem = {
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      // price: +computedPrice,
-      // discountDeducted: discountAmount,
-      discountDeducted: 999,
-      amount: amount,
-      img: product.coverImage,
-      product_name_Id: product.product_name_Id,
+
+    const currentCartItem = cart?.cartItems.find((item) => item.productId === product.id);
+
+    if (currentCartItem) {
+      deleteCartItem(currentCartItem?.id).then(() => dispatch(init()));
+      setIsAddedToCart(false)
+    } else {
+      addToCart(product.id, amount).then(() => dispatch(init()));;
+      setIsAddedToCart(true);
     }
 
-    isAddedToCart
-      ? dispatch(cartActions.remove(product.id))
-      : dispatch(cartActions.add(cartItem));
+    dispatch(init());
   }
 
   return (

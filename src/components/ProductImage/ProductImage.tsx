@@ -40,7 +40,6 @@ export const ProductImage: React.FC<Props> = ({ isSmall, product }) => {
         )}
         onClick={addToFavoritesHandle}
       ></button>
-
     </div>
   )
 }

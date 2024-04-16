@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { Product, ProductFromServer } from "../helpers/types"
+import { ProductFromServer } from "../helpers/types"
 
 const dataFromStorage = localStorage.getItem('favorites')
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { useAppSelector } from '../../app/hooks';
 import { Breadcrumbs } from '../../components/Breadcrumbs';
 import { ProductCard } from '../../components/ProductCard';
-import { Product, ProductFromServer } from '../../helpers/types';
+import { ProductFromServer } from '../../helpers/types';
 import "./FavoritesPage.scss";
 
 export default function FavoritesPage() {
@@ -17,11 +17,22 @@ export default function FavoritesPage() {
         <Breadcrumbs />
       </div>
       <div className="favorites-page__catalog">
-        {favorites.map((product: ProductFromServer) => (
-          <React.Fragment key={product.id}>
-            <ProductCard product={product} />
-          </React.Fragment>
-        ))}
+        {favorites.length
+          ? (
+            <>
+              {favorites.map((product: ProductFromServer) => (
+                <React.Fragment key={product.id}>
+                  <ProductCard product={product} />
+                </React.Fragment>
+              ))}
+            </>
+          )
+          : (
+            <h2 className="cart-page__title">
+              There is no products in favorites yet...
+            </h2>
+          )
+        }
       </div>
     </div>
   )

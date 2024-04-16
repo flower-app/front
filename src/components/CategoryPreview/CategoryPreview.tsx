@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getAllProducts, getProductsByProperty } from '../../helpers/api';
-import { Product, ProductFromServer, PropertyType } from '../../helpers/types';
+import { ProductFromServer, PropertyType } from '../../helpers/types';
 import { Loader } from '../Loader';
 import { ProductCard } from '../ProductCard/ProductCard';
 import "./CategoryPreview.scss";
@@ -54,19 +54,19 @@ export const CategoryPreview: React.FC<Props> = ({ isFirstBlock, title, margin, 
         >
           {title}
         </h2>
-            <div
-              className={classNames(
-                "category-preview__content",
-                { 'category-preview__content--reverse': reverse }
-                )}
-                >
-                {isLoading && <Loader />}
-              <div
-                className={classNames(
-                  "category-preview__gallery",
-                  { 'category-preview__gallery--reverse': reverse }
-                )}
-              >
+        <div
+          className={classNames(
+            "category-preview__content",
+            { 'category-preview__content--reverse': reverse }
+          )}
+        >
+          {isLoading && <Loader />}
+          <div
+            className={classNames(
+              "category-preview__gallery",
+              { 'category-preview__gallery--reverse': reverse }
+            )}
+          >
             {hasError
               ? <p> Something went wrong </p>
               : (<>
@@ -83,17 +83,17 @@ export const CategoryPreview: React.FC<Props> = ({ isFirstBlock, title, margin, 
                   })
                 }
               </>)}
-              </div>
+          </div>
 
-              <div className="category-preview__btn">
+          <div className="category-preview__btn">
             <Link
               to='/catalog'
               className="button button--with-arrow"
             >
-                  See catalog <span className="button__arrow"></span>
-                </Link>
-              </div>
-            </div>
+              See catalog <span className="button__arrow"></span>
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   )

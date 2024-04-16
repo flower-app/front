@@ -22,7 +22,7 @@
     gap: 82px;
   }
 
-    &__img-container {
+  &__img-container {
     position: relative;
     height: 440px;
   }
@@ -76,16 +76,15 @@
   &__description-bottom {
     display: flex;
     justify-content: space-between;
-        align-items:flex-end;
+    align-items: flex-end;
   }
 
   &__quantity {
     @extend %h4;
     text-align: center;
   }
-  
-  &__quantity-text {
 
+  &__quantity-text {
     font-size: 19px;
   }
 
@@ -98,6 +97,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    &--disabled {
+      color: gray;
+      border-color: gray;
+      pointer-events: none;
+      cursor: default;
+    }
   }
 
   &__min-btn,
@@ -105,7 +111,7 @@
     font-family: "Outfit";
     border: none;
     background-color: transparent;
-    color: $secondary-red;
+    color: inherit;
     display: flex;
     align-items: center;
 
@@ -113,7 +119,6 @@
       color: $main-red;
     }
   }
-
 
   &__h3 {
     @extend %h3;

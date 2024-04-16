@@ -1,39 +1,283 @@
 import classNames from 'classnames'
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useContext, useEffect, useState } from 'react'
+import { useAppSelector } from '../../app/hooks'
 import { Breadcrumbs } from '../../components/Breadcrumbs'
 import { CartTotal } from '../../components/CartTotal'
+import { ModalOrder } from '../../components/Modal/ModalOrder'
+import { createOrder, deleteCartItem } from '../../helpers/api'
+import { globalContext } from '../../helpers/globalContext'
+import { Cart, OrderInfo, User } from '../../helpers/types'
 import "./CheckOutPage.scss"
 
 export default function CheckOutPage() {
+  const { setIsModalOpen } = useContext(globalContext);
+  const user = useAppSelector(state => state.user.user) as User;
+  const cart = useAppSelector(state => state.cart.cart) as Cart;
+  const [hasErrors, setHasErrors] = useState('');
+  const [paymentData, setPaymentData] = useState({
+    isChecked: false,
+    isDisabled: true,
+    isFilled: false,
+    cardNumber: '',
+    expiryDate: '',
+    cvvCode: '',
+    rememberCard: false
+  });
 
-  const formatExpiryDate = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const input = event.target;
-    const value = input.value.replace(/\D/g, '');
+  useEffect(() => {
+    const paymentDataFromStorage = localStorage.getItem('paymentData');
 
-    if (value.length > 2) {
-      input.value = value.slice(0, 2) + '/' + value.slice(2);
+    if (paymentDataFromStorage) {
+      setPaymentData(JSON.parse(paymentDataFromStorage))
+      setFormData(prevValue => {
+        return {
+          ...prevValue,
+          payment: JSON.parse(paymentDataFromStorage)
+        }
+      })
+    }
+  }, [])
+
+  const [formData, setFormData] = useState({
+    contactInfo: {
+      isChecked: false,
+      isDisabled: false,
+      isFilled: false,
+      name: user?.firstName || '',
+      surname: user?.lastName || '',
+      email: user?.email || '',
+      phoneNumber: user?.numberPhone || '',
+    },
+    shippingDetails: {
+      isChecked: false,
+      isDisabled: true,
+      isFilled: false,
+      country: '',
+      city: '',
+      street: '',
+      apartment: ''
+    },
+    payment: {
+      isChecked: false,
+      isDisabled: true,
+      isFilled: false,
+      cardNumber: paymentData?.cardNumber || '',
+      expiryDate: paymentData?.expiryDate || '',
+      cvvCode: paymentData.cvvCode || '',
+      rememberCard: paymentData.rememberCard || false,
+    }
+  });
+  const [activeFieldset, setActiveFieldset] = useState('contactInfo');
+
+  const validateContactInfo = () => {
+    setHasErrors('');
+
+    const filled = formData.contactInfo.name?.trim() && formData.contactInfo.surname?.trim() && formData.contactInfo.phoneNumber?.trim() && formData.contactInfo.email?.trim();
+
+    if (filled) {
+      let isValid = true;
+      if (!/^[A-Za-z]+$/.test(formData.contactInfo.name)) {
+        setHasErrors((prevText) => {
+          const newText = prevText + 'First name is not valid! '
+          return newText;
+        })
+        isValid = false;
+      }
+      if (!/^[A-Za-z]+$/.test(formData.contactInfo.surname)) {
+        setHasErrors((prevText) => {
+          const newText = prevText + 'Last name is not valid! ';
+          return newText;
+        })
+        isValid = false;
+      }
+      if (!/\S+@\S+\.\S+/.test(formData.contactInfo
+        .email)) {
+        setHasErrors((prevText) => {
+          const newText = prevText + 'Email is not valid! ';
+          return newText;
+        })
+        isValid = false;
+      }
+      return isValid;
     } else {
-      input.value = value;
+      setHasErrors('All fields are required!');
+      return false;
     }
   }
 
-  function formatPhoneNumber(event: React.ChangeEvent<HTMLInputElement>) {
-    const input = event.target;
-    const value = input.value.replace(/\D/g, '');
+  const validateShippingDetails = () => {
+    setHasErrors('');
 
-    if (value.length <= 10) {
-      input.value = value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+    const filled = formData.shippingDetails.apartment.trim() && formData.shippingDetails.city.trim() && formData.shippingDetails.country.trim() && formData.shippingDetails.street.trim();
+
+    if (filled) {
+      let isValid = true;
+      if (!/^[A-Za-z]+$/.test(formData.shippingDetails.country)) {
+        setHasErrors((prevText) => {
+          const newText = prevText + 'Country name is not valid! '
+          return newText;
+        })
+        isValid = false;
+      }
+      if (!/^[A-Za-z]+$/.test(formData.shippingDetails.city)) {
+        setHasErrors((prevText) => {
+          const newText = prevText + 'Sity name is not valid! ';
+          return newText;
+        })
+        isValid = false;
+      }
+      return isValid;
     } else {
-      input.value = value.slice(0, 10).replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+      setHasErrors('All fields are required!');
+      return false;
     }
   }
 
-  const isChecked = false;
-  const isDisabled = false;
+  const validatePayment = () => {
+    setHasErrors('');
+
+    const filled = formData.payment.cardNumber.trim() && formData.payment.cvvCode.trim() && formData.payment.expiryDate.trim();
+
+    if (filled) {
+      console.log(!(/^\d+/).test(formData.payment.cvvCode));
+
+      let isValid = true;
+      if (!(/^\d+/).test(formData.payment.cardNumber) || formData.payment.cardNumber.toString().length !== 16) {
+        setHasErrors((prevText) => {
+          const newText = prevText + 'Card number is not valid! '
+          return newText;
+        })
+        isValid = false;
+      }
+      if (!(/^\d+/).test(formData.payment.cvvCode) || formData.payment.cvvCode.toString().length !== 3) {
+        setHasErrors((prevText) => {
+          const newText = prevText + 'CVV code is not valid! ';
+          return newText;
+        })
+        isValid = false;
+      }
+
+      if (formData.payment.rememberCard) {
+        const data = {
+          ...formData.payment,
+          isChecked: false,
+          isDisabled: true,
+          isFilled: false,
+        }
+        localStorage.setItem('paymentData', JSON.stringify(data))
+      }
+
+      return isValid;
+    } else {
+      setHasErrors('All fields are required!');
+      return false;
+    }
+  }
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, checked, type } = event.target;
+    const updatedFormData: any = { ...formData };
+
+    if (type === 'checkbox') {
+      updatedFormData.payment[name] = checked;
+    } else if (name === 'expiryDate') {
+      const newValue = value.replace(/\D/g, '');
+      if (newValue.length > 2) {
+        updatedFormData.payment.expiryDate = newValue.slice(0, 2) + '/' + newValue.slice(2);
+      } else {
+        updatedFormData.payment.expiryDate = newValue;
+      }
+    }
+    else {
+      updatedFormData[activeFieldset][name] = value;
+    }
+    setFormData(updatedFormData);
+  };
+
+  const handleEdit = (currentFieldset: any) => {
+    switch (activeFieldset) {
+      case 'contactInfo':
+        if (validateContactInfo()) {
+          formData.contactInfo.isChecked = true;
+          formData.contactInfo.isDisabled = false;
+          setActiveFieldset(currentFieldset);
+        }
+        break;
+      case 'shippingDetails':
+        if (validateShippingDetails()) {
+          formData.shippingDetails.isChecked = true;
+          formData.shippingDetails.isDisabled = false;
+          setActiveFieldset(currentFieldset);
+        }
+        break;
+      case 'payment':
+        if (validatePayment()) {
+          formData.payment.isChecked = true;
+          formData.payment.isDisabled = false;
+          setActiveFieldset(currentFieldset);
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
+  const handleSubmit = () => {
+    switch (activeFieldset) {
+      case 'contactInfo':
+        if (validateContactInfo()) {
+          formData.contactInfo.isChecked = true;
+          formData.contactInfo.isDisabled = false;
+          formData.shippingDetails.isDisabled = false;
+          setActiveFieldset('shippingDetails');
+        }
+        break;
+      case 'shippingDetails':
+        if (validateShippingDetails()) {
+          formData.shippingDetails.isChecked = true;
+          formData.shippingDetails.isDisabled = false;
+          formData.payment.isDisabled = false;
+          setActiveFieldset('payment');
+        }
+        break;
+      case 'payment':
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handlePurchse = () => {
+    if (validatePayment()) {
+      const data: OrderInfo = {
+        country: formData.shippingDetails.country,
+        street: formData.shippingDetails.street,
+        city: formData.shippingDetails.city,
+        apartment: formData.shippingDetails.apartment,
+        cardNumber: formData.payment.cardNumber,
+        mmyy: formData.payment.expiryDate,
+        cvvCode: formData.payment.cvvCode,
+      }
+
+      createOrder(data)
+        .then(() => {
+          cart.cartItems.forEach(item => {
+            deleteCartItem(item.id);
+          });
+        });
+
+      setIsModalOpen(true)
+
+    } else {
+
+      console.log('error');
+    }
+
+  }
 
   return (
     <div className="check-out-page">
+      <ModalOrder />
       <div className="check-out-page__top">
         <h2 className="check-out-page__title">Check out</h2>
         <Breadcrumbs />
@@ -45,7 +289,9 @@ export default function CheckOutPage() {
               <div
                 className={classNames(
                   'check-out-page__legend-wrapper',
-                  { 'check-out-page__legend-wrapper--checked': isChecked }
+                  {
+                    'check-out-page__legend-wrapper--checked': formData.contactInfo.isChecked && activeFieldset !== 'contactInfo',
+                  }
                 )}
               >
                 <legend
@@ -53,45 +299,71 @@ export default function CheckOutPage() {
                     'check-out-page__legend',
                   )}
                 >
-                  {isChecked && (
+                  {formData.contactInfo.isChecked && activeFieldset !== 'contactInfo' && (
                     <span
                       className="check-out-page__check"
                     ></span>)}
                   1. Contact information
                 </legend>
-                {isChecked && (
+                {formData.contactInfo.isChecked && activeFieldset !== 'contactInfo' && (
                   <button
                     aria-label="edit"
                     className="check-out-page__edit-btn"
+                    type="button"
+                    onClick={() => handleEdit('contactInfo')}
                   ></button>)}
               </div>
 
-              <div className="check-out-page__fields">
-                <input
-                  type="text"
-                  className="input"
-                  placeholder="Name"
-                />
-                <input
-                  type="text"
-                  className="input"
-                  placeholder="Surname"
-                />
-                <input
-                  type="email"
-                  className="input"
-                  placeholder="Email"
-                />
-                <input
-                  type="tel"
-                  className="input"
-                  placeholder="Phone number"
-                  onChange={formatPhoneNumber}
-                />
-                <button className="button button--wide">
-                  Continue to shipping
-                </button>
-              </div>
+              {activeFieldset === 'contactInfo' && (
+                <div className="check-out-page__fields">
+                  <input
+                    type="text"
+                    className="input"
+                    placeholder="Name"
+                    name="name"
+                    value={formData.contactInfo.name}
+                    onChange={handleChange}
+                    autoComplete='name'
+                  />
+                  <input
+                    type="text"
+                    className="input"
+                    placeholder="Surname"
+                    name="surname"
+                    value={formData.contactInfo.surname}
+                    onChange={handleChange}
+                    autoComplete='surname'
+                  />
+                  <input
+                    type="email"
+                    className="input"
+                    placeholder="Email"
+                    name="email"
+                    value={formData.contactInfo.email}
+                    onChange={handleChange}
+                    autoComplete='email'
+                  />
+                  <input
+                    type="tel"
+                    className="input"
+                    placeholder="Phone number"
+                    name="phoneNumber"
+                    value={formData.contactInfo.phoneNumber}
+                    onChange={handleChange}
+                    autoComplete='phone'
+                  />
+                  {hasErrors && (
+                    <p className='check-out-page__error'>{hasErrors}</p>
+                  )}
+                  <button
+                    className="button button--wide"
+                    type="button"
+                    onClick={handleSubmit}
+                  >
+                    Continue to shipping
+                  </button>
+                </div>
+              )}
             </fieldset>
 
             <fieldset className="check-out-page__fieldset">
@@ -99,8 +371,8 @@ export default function CheckOutPage() {
                 className={classNames(
                   'check-out-page__legend-wrapper',
                   {
-                    'check-out-page__legend-wrapper--checked': isChecked,
-                    'check-out-page__legend-wrapper--disabled': isDisabled,
+                    'check-out-page__legend-wrapper--checked': formData.shippingDetails.isChecked && activeFieldset !== "shippingDetails",
+                    'check-out-page__legend-wrapper--disabled': formData.shippingDetails.isDisabled,
                   }
                 )}
               >
@@ -109,57 +381,86 @@ export default function CheckOutPage() {
                     'check-out-page__legend',
                   )}
                 >
-                  {isChecked && (
+                  {formData.shippingDetails.isChecked && activeFieldset !== "shippingDetails" && (
                     <span
                       className="check-out-page__check"
                     ></span>)}
                   2. Shipping details
                 </legend>
-                {isChecked && (
+                {formData.shippingDetails.isChecked && activeFieldset !== "shippingDetails" && (
                   <button
                     aria-label="edit"
                     className="check-out-page__edit-btn"
+                    type="button"
+                    onClick={() => handleEdit('shippingDetails')}
                   ></button>)}
               </div>
 
-              <div className={classNames(
-                'check-out-page__fields',
-                { 'check-out-page__fields--disabled': isDisabled }
-              )}>
-                <input
-                  type="text"
-                  className="input"
-                  placeholder="Country"
-                />
-                <input
-                  type="text"
-                  className="input"
-                  placeholder="City"
-                />
-                <div className='check-out-page__inputs-wrapper'>
+              {activeFieldset === 'shippingDetails' && (
+
+                <div className={classNames(
+                  'check-out-page__fields',
+                  { 'check-out-page__fields--disabled': formData.shippingDetails.isDisabled }
+                )}>
                   <input
                     type="text"
                     className="input"
-                    placeholder="Street"
+                    placeholder="Country"
+                    name='country'
+                    value={formData.shippingDetails.country}
+                    onChange={handleChange}
+                    autoComplete='country'
                   />
                   <input
                     type="text"
                     className="input"
-                    placeholder="Apartment"
+                    placeholder="City"
+                    name='city'
+                    value={formData.shippingDetails.city}
+                    onChange={handleChange}
+                    autoComplete='city'
                   />
+                  <div className='check-out-page__inputs-wrapper'>
+                    <input
+                      type="text"
+                      className="input"
+                      placeholder="Street"
+                      name='street'
+                      value={formData.shippingDetails.street}
+                      onChange={handleChange}
+                      autoComplete='street'
+                    />
+                    <input
+                      type="text"
+                      className="input"
+                      placeholder="Apartment"
+                      name='apartment'
+                      value={formData.shippingDetails.apartment}
+                      onChange={handleChange}
+                      autoComplete='apartment'
+                    />
+                  </div>
+                  {hasErrors && (
+                    <p className='check-out-page__error'>{hasErrors}</p>
+                  )}
+                  <button
+                    className="button button--wide"
+                    type='button'
+                    onClick={handleSubmit}
+                  >
+                    Continue to payment
+                  </button>
                 </div>
-                <button className="button button--wide">
-                  Continue to payment
-                </button>
-              </div>
+              )}
             </fieldset>
+
             <fieldset className="check-out-page__fieldset">
               <div
                 className={classNames(
                   'check-out-page__legend-wrapper',
                   {
-                    'check-out-page__legend-wrapper--checked': isChecked,
-                    'check-out-page__legend-wrapper--disabled': isDisabled,
+                    'check-out-page__legend-wrapper--checked': formData.payment.isChecked && activeFieldset !== "payment",
+                    'check-out-page__legend-wrapper--disabled': formData.payment.isDisabled,
                   }
                 )}
               >
@@ -168,56 +469,87 @@ export default function CheckOutPage() {
                     'check-out-page__legend',
                   )}
                 >
-                  {isChecked && (
+                  {formData.payment.isChecked && activeFieldset !== "payment" && (
                     <span
                       className="check-out-page__check"
                     ></span>)}
                   3. Payment
                 </legend>
-                {isChecked && (
+                {formData.payment.isChecked && activeFieldset !== "payment" && (
                   <button
                     aria-label="edit"
                     className="check-out-page__edit-btn"
+                    type="button"
+                    onClick={() => handleEdit('payment')}
                   ></button>)}
               </div>
-              <div className={classNames(
-                'check-out-page__fields',
-                { 'check-out-page__fields--disabled': isDisabled }
-              )}>
 
-                <input
-                  type="text"
-                  className="input"
-                  placeholder="Card number"
-                />
-                <div className='check-out-page__inputs-wrapper'>
+              {activeFieldset === 'payment' && (
+
+
+                <div className={classNames(
+                  'check-out-page__fields',
+                  { 'check-out-page__fields--disabled': formData.payment.isDisabled }
+                )}>
+
                   <input
                     type="text"
                     className="input"
-                    placeholder="MM/YY"
-                    id="expiryDate"
-                    maxLength={5}
-                    onChange={formatExpiryDate}
+                    placeholder="Card number"
+                    name='cardNumber'
+                    value={formData.payment.cardNumber}
+                    onChange={handleChange}
+                    autoComplete='card'
                   />
-                  <input
-                    type="text"
-                    className="input"
-                    placeholder="CVV code"
-                  />
+                  <div className='check-out-page__inputs-wrapper'>
+                    <input
+                      type="text"
+                      className="input"
+                      placeholder="MM/YY"
+                      id="expiryDate"
+                      maxLength={5}
+                      name='expiryDate'
+                      value={formData.payment.expiryDate}
+                      onChange={handleChange}
+                      autoComplete='expiryDate'
+                    />
+                    <input
+                      type="text"
+                      className="input"
+                      placeholder="CVV code"
+                      name='cvvCode'
+                      value={formData.payment.cvvCode}
+                      onChange={handleChange}
+                      autoComplete='cvv'
+                    />
+                  </div>
+                  <label className="check-out-page__remember-container">
+                    <input
+                      type="checkbox"
+                      className="check-out-page__remember-checkbox"
+                      name='rememberCard'
+                      checked={formData.payment.rememberCard}
+                      onChange={handleChange}
+                    />
+                    <span className="check-out-page__remember-checkmark"></span>
+                    Remember the card
+                  </label>
+
+                  {hasErrors && (
+                    <p className='check-out-page__error'>{hasErrors}</p>
+                  )}
+                  <button
+                    type='button'
+                    className={classNames(
+                      'button button--wide',
+                      { "button--disabled": !formData.payment.cardNumber && !formData.payment.cvvCode && !formData.payment.expiryDate }
+                    )}
+                    onClick={handlePurchse}
+                  >
+                    Make a purchase
+                  </button>
                 </div>
-                <label className="check-out-page__remember-container">
-                  <input
-                    type="checkbox"
-                    className="check-out-page__remember-checkbox"
-                  />
-                  <span className="check-out-page__remember-checkmark"></span>
-                  Remember the card
-                </label>
-
-                <button className="button button--wide">
-                  Make a purchase
-                </button>
-              </div>
+              )}
             </fieldset>
           </form>
         </div>

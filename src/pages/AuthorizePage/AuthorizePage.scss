@@ -46,7 +46,21 @@
 
   &__fieldset {
     display: flex;
-gap: 10px;
+    gap: 10px;
+  }
+
+  &__input-block {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  &__error {
+    position: absolute;
+    font-size: 13px;
+    color: red;
+    top: 56px;
   }
 
   &__right {
@@ -59,9 +73,9 @@ gap: 10px;
     border: 1px solid $dark-pink;
   }
 
-    &__form {
+  &__form {
     display: grid;
-    gap: 20px;
+    gap: 24px;
     margin-bottom: 30px;
   }
 }

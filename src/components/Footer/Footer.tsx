@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Nav } from '../Nav';
 import "./Footer.scss";
 
@@ -33,7 +34,10 @@ export function Footer() {
           </li>
         </ul>
         <div className="footer__links">
-            <Nav isFooter={true} />
+          <Nav isFooter={true} />
+          <div className="footer__other-links">
+            <Link to="faq">FAQ</Link>
+          </div>
           <address className="footer__address">
             <a
               href="tel:+38066578398"

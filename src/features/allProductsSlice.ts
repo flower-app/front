@@ -1,12 +1,20 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getPageOfProducts, getProductsByProperty, getProductsByQuery } from "../helpers/api";
-import { CatalogPageParams, ProductFromServer, PropertyType } from "../helpers/types";
+import {
+  getPageOfProducts,
+  getProductsByProperty,
+  getProductsByQuery,
+} from "../helpers/api";
+import {
+  CatalogPageParams,
+  ProductFromServer,
+  PropertyType,
+} from "../helpers/types";
 
 type State = {
-  products: ProductFromServer[],
-  isLoading: boolean,
-  hasError: boolean,
-}
+  products: ProductFromServer[];
+  isLoading: boolean;
+  hasError: boolean;
+};
 
 const initialState: State = {
   products: [],
@@ -14,13 +22,19 @@ const initialState: State = {
   hasError: false,
 };
 
-export const init = createAsyncThunk("products/fetch", (params: CatalogPageParams) => {
-  return getPageOfProducts(params.page, params.sort);
-});
+export const init = createAsyncThunk(
+  "products/fetch",
+  (params: CatalogPageParams) => {
+    return getPageOfProducts(params.page, params.sort);
+  }
+);
 
-export const getByQuery = createAsyncThunk("products/getByQuery", (query: string) => {
-  return getProductsByQuery(query);
-});
+export const getByQuery = createAsyncThunk(
+  "products/getByQuery",
+  (query: string) => {
+    return getProductsByQuery(query);
+  }
+);
 
 export type PropertyParams = {
   id: number;
@@ -30,25 +44,30 @@ export type PropertyParams = {
 export const getByProperty = createAsyncThunk(
   "products/getByProperty",
   (propertyParams: PropertyParams) => {
-    return getProductsByProperty(propertyParams.id, propertyParams.propertyType);
+    return getProductsByProperty(
+      propertyParams.id,
+      propertyParams.propertyType
+    );
   }
 );
 
 export const allProductsSlice = createSlice({
   name: "products",
   initialState,
-  reducers: {
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(init.pending, (state: State) => {
       state.isLoading = true;
     });
-    builder.addCase(init.fulfilled, (state: State, action: PayloadAction<ProductFromServer[]>) => {
-      state.isLoading = false;
-      state.hasError = false;
-      state.products = action.payload;
-    })
-    builder.addCase(init.rejected, (state: State,) => {
+    builder.addCase(
+      init.fulfilled,
+      (state: State, action: PayloadAction<ProductFromServer[]>) => {
+        state.isLoading = false;
+        state.hasError = false;
+        state.products = action.payload;
+      }
+    );
+    builder.addCase(init.rejected, (state: State) => {
       state.hasError = true;
       state.isLoading = false;
     });
@@ -59,7 +78,7 @@ export const allProductsSlice = createSlice({
       getByProperty.fulfilled,
       (state: State, action: PayloadAction<ProductFromServer[]>) => {
         state.isLoading = false;
-         state.hasError = false;
+        state.hasError = false;
         state.products = action.payload;
       }
     );

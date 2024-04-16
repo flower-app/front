@@ -4,7 +4,7 @@ import App from './App'
 import { ScrollToTop } from './components/ScrollToTop'
 import { ContextProvider } from './helpers/globalContext'
 import { AboutUsPage } from './pages/AboutUsPage'
-import AuthorizePage from './pages/AuthorizePage/AuthorizePage'
+import ProfilePage from './pages/AuthorizePage/ProfilePage'
 import { LogInPage } from './pages/AuthorizePage/LogInPage'
 import { SingInPage } from './pages/AuthorizePage/SingInPage'
 import { CartPage } from './pages/CartPage'
@@ -14,6 +14,7 @@ import { ErrorPage } from './pages/ErrorPage'
 import FavoritesPage from './pages/FavoritesPage/FavoritesPage'
 import HomePage from './pages/HomePage/HomePage'
 import { ProductPage } from './pages/ProductPage'
+import { FaqPage } from './pages/FaqPage/FaqPage'
 
 export default function () {
   return (
@@ -34,11 +35,12 @@ export default function () {
               <Route index element={<CartPage />} />
               <Route path="check-out" element={<CheckOutPage />} />
             </Route>
-            <Route path="profile" element={<AuthorizePage />} >
+            <Route path="profile" element={<ProfilePage />} >
               <Route index element={<SingInPage />} />
               <Route path="sign-in" element={<SingInPage />} />
               <Route path="log-in" element={<LogInPage />} />
             </Route>
+            <Route path="faq" element={<FaqPage />} />
             <Route path="*" element={<ErrorPage />} />
           </Route>
         </Routes>

@@ -38,14 +38,6 @@ export type CartItem = {
   product_name_Id: string;
 };
 
-export type User = {
-  id: number | null;
-  email: string | null;
-  numberPhone: string | null;
-  firstName: string | null;
-  lastName: string | null;
-};
-
 export type DescriptionData = {
   id: number;
   name: "string";
@@ -55,7 +47,7 @@ export type DescriptionData = {
 export type CatalogPageParams = {
   page: number;
   sort?: string;
-}
+};
 
 export enum PropertyType {
   type = "product-type",
@@ -65,6 +57,59 @@ export enum PropertyType {
   contain = "product-contain",
   color = "product-color",
 }
+
+export type User = {
+  id?: number;
+  email: string;
+  numberPhone?: string;
+  firstName?: string;
+  lastName?: string;
+};
+
+export type LogInData = {
+  email: string;
+  password: string;
+};
+
+export type CartItemFromServer = {
+  id: number;
+  productId: number;
+  productName: string;
+  productPrice: number,
+  quantity: number;
+};
+
+export type Cart = {
+  id: number;
+  userId: number;
+  cartItems: CartItemFromServer[];
+  total: number;
+};
+
+export type OrderInfo = {
+  country: string;
+  street: string;
+  city: string;
+  apartment: string;
+  cardNumber: string;
+  mmyy: string;
+  cvvCode: string;
+};
+
+export type OrderItem = {
+  id: number;
+  productId: number;
+  quantity: number;
+};
+
+export type OrderFromServer = {
+  id: number;
+  userId: number;
+  orderItems: OrderItem[];
+  orderDate: string;
+  total: number;
+  status: string;
+};
 
 export type Color = "red" | "yellow" | "pink" | "white" | "purple";
 

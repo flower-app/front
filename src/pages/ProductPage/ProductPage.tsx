@@ -1,33 +1,40 @@
 import React, { useEffect, useState } from 'react';
-// import { useParams } from 'react-router-dom';
 import { Breadcrumbs } from '../../components/Breadcrumbs';
 import "./ProductPage.scss";
-import { product } from '../../helpers/sample';
-import { CartItem } from '../../components/CartItem';
 import { ProductCard } from '../../components/ProductCard';
 import classNames from 'classnames';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { ProductImage } from '../../components/ProductImage';
 import { CartButton } from '../../components/CartButton';
-import { Product, ProductFromServer, PropertyType } from '../../helpers/types';
-import { getProductById, getProductsByProperty, getPropertyValue } from '../../helpers/api';
+import { ProductFromServer, PropertyType } from '../../helpers/types';
+import { getProductsByProperty } from '../../helpers/api';
 import { Loader } from '../../components/Loader';
 import { init } from '../../features/currentProductSlice';
-// import { CartItem } from '../../helpers/types';
 
 export function ProductPage() {
   const { state } = useLocation();
   const [amount, setAmount] = useState(1);
   const dispatch = useAppDispatch();
+  const cart = useAppSelector(state => state.cart.cart);
+
+
+  useEffect(() => {
+    setAmount(1);
+  }, [state.id])
 
   const { currentProduct, isLoading, hasError } = useAppSelector(state => state.currentProduct)
 
+  const [isAddedToCart, setIsAddedToCart] = useState(cart?.cartItems.some(item => item.productId === currentProduct?.id) || false);
+
+  useEffect(() => {
+    setIsAddedToCart(cart?.cartItems.some(item => item.productId === currentProduct?.id) || false)
+  }, [cart?.cartItems.length])
 
   const [recomended, setRecomended] = useState<ProductFromServer[]>([]);
 
   useEffect(() => {
-    dispatch(init(state.id)) 
+    dispatch(init(state.id))
   }, [state.id, dispatch])
 
   const changeQuantityHandler = (value: number) => {
@@ -72,9 +79,9 @@ export function ProductPage() {
                                 className="product-page__h1"
                               >
                                 {currentProduct.name}
-                            </h1>
+                              </h1>
                               <p className="product-page__price">
-                              {`$${currentProduct?.price.toFixed(2) }`}
+                                {`$${currentProduct?.price.toFixed(2)}`}
                               </p>
                             </div>
                             <div className="product-page__p">
@@ -85,7 +92,10 @@ export function ProductPage() {
                           <div className="product-page__description-bottom">
                             <div className="product-page__quantity">
                               <span className="product-page__quantity-text">Quantity</span>
-                              <div className="product-page__buttons">
+                              <div className={classNames(
+                                "product-page__buttons",
+                                { "product-page__buttons--disabled": isAddedToCart }
+                              )}>
                                 <button
                                   className='product-page__min-btn'
                                   onClick={() => changeQuantityHandler(-1)}
@@ -128,7 +138,6 @@ export function ProductPage() {
                   </>)}
             </div>
           )}
-
     </div>
   )
 }

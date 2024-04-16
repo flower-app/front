@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useRef } from 'react';
 import { useAppDispatch } from '../../app/hooks';
 import { getByProperty } from '../../features/allProductsSlice';
+import { getAllPropertiesOptions } from '../../helpers/api';
 import { DescriptionData, PropertyType } from '../../helpers/types';
 import { SortByPriceParams } from '../../pages/CatalogPage';
 import './Select.scss';
@@ -31,10 +32,9 @@ export const Select: React.FC<Props> = ({
 
   useEffect(() => {
     if (searchName) {
-      fetch('http://ec2-3-128-171-44.us-east-2.compute.amazonaws.com/api/' + searchName)
-      .then(response => response.json())
-      .then(setProperties);
-    } 
+      getAllPropertiesOptions(searchName)
+        .then(setProperties);
+    }
   }, [])
 
   const onSelect = (value: any) => {
@@ -93,22 +93,22 @@ export const Select: React.FC<Props> = ({
         {searchName
           ? (
             <>
-            {properties.map(prop => (
-              <li key={prop.id} className="select__li">
-                <button
-                  type="button"
-                  className={classNames(
-                    "select__option",
-                    { "select__option--active": +prop.id === +active }
-                  )}
-                  onMouseDown={() => onSelect(prop.id)}
+              {properties.map(prop => (
+                <li key={prop.id} className="select__li">
+                  <button
+                    type="button"
+                    className={classNames(
+                      "select__option",
+                      { "select__option--active": +prop.id === +active }
+                    )}
+                    onMouseDown={() => onSelect(prop.id)}
                   >
-                  {prop.name}
-                </button>
-              </li>
-            ))}
+                    {prop.name}
+                  </button>
+                </li>
+              ))}
             </>
-        )
+          )
           : (
             <>
               {propertyList?.slice(1).map(prop => (
@@ -126,7 +126,7 @@ export const Select: React.FC<Props> = ({
                 </li>
               ))}
             </>
-      )}
+          )}
       </ul>
     </div>
   );
