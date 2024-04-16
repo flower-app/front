@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { useContext } from 'react'
 import { NavLink } from 'react-router-dom';
-import { PathnameContext } from '../../helpers/PathnameContext';
+import { globalContext } from '../../helpers/globalContext';
 
 import "./Nav.scss";
 
@@ -9,8 +9,8 @@ type Props = {
   isFooter?: boolean,
 }
 
-export const Nav: React.FC<Props> = ({isFooter}) => {
-  const { isHomePage } = useContext(PathnameContext);
+export const Nav: React.FC<Props> = ({ isFooter }) => {
+  const { isHomePage } = useContext(globalContext);
 
   return (
     <nav className="nav nav--footer">
@@ -22,14 +22,20 @@ export const Nav: React.FC<Props> = ({isFooter}) => {
         }
       )}>
         <li className="nav__item">
-          <NavLink to="home" className={({ isActive }) => classNames(
-            'nav__link',
-            {
-              'nav__link--active': isActive,
-              'nav__link--footer': isFooter,
-              'nav__link--active--white': isHomePage,
-            },
-          )}>Home</NavLink>
+          <NavLink
+            to="home"
+            className={({ isActive }) => classNames(
+              'nav__link',
+              {
+                'nav__link--active': isActive,
+                'nav__link--footer': isFooter,
+                'nav__link--active--white': isHomePage,
+              },
+            )}
+            onClick={() => window.scrollTo(0, 0)}
+          >
+            Home
+          </NavLink>
         </li>
         <li className="nav__item">
           <NavLink to="catalog" className={({ isActive }) => classNames(

@@ -1,7 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useAppDispatch } from '../../app/hooks';
 import { CategoryPreview } from '../../components/CategoryPreview/CategoryPreview';
+import { PropertyType } from '../../helpers/types';
 import "./HomePage.scss";
+
+
 
 export default function HomePage() {
   return (
@@ -20,6 +23,8 @@ export default function HomePage() {
           title='20% Off Your First Purchase at Our Store!'
           margin='--margin-left'
           reverse={false}
+          propertyType={PropertyType.discount}
+          propertyId={2}
         />
       </section>
 
@@ -28,6 +33,8 @@ export default function HomePage() {
           title='Greening Your Space, Plant for Your Home'
           margin='--margin-right'
           reverse={true}
+          propertyType={PropertyType.type}
+          propertyId={2}
         />
       </section>
     </div>

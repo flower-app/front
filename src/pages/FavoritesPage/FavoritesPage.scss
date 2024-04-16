@@ -8,4 +8,11 @@
   &__title {
     @extend %h2;
   }
+
+  &__catalog {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 65px;
+    margin-bottom: 64px;
+  }
 }

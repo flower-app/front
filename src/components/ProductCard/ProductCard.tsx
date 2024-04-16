@@ -1,66 +1,46 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Product } from '../../helpers/types';
+import { ProductFromServer } from '../../helpers/types';
+import { CartButton } from '../CartButton';
+import { ProductImage } from '../ProductImage';
 import "./ProductCard.scss";
 
 type Props = {
   isSmall?: boolean,
-  product: Product,
+  product: ProductFromServer,
 }
 
 export const ProductCard: React.FC<Props> = ({ isSmall, product }) => {
+
   return (
     <article className={classNames(
       'product-card',
       { 'product-card--small': isSmall }
     )}>
-      <div
-        className={classNames(
-          'product-card__img-container',
-          { 'product-card__img-container--small': isSmall }
-        )}
-      >
-        <img
-          src={product.img}
-          alt={product.name} className="product-card__img"
-        />
-
-        <button className={classNames(
-          'product-card__fav-btn',
-          { 'product-card__fav-btn--active': false },
-        )}></button>
-
-      </div>
+      <ProductImage isSmall={isSmall} product={product} />
       <div className="product-card__summary">
         <Link
           to={`/catalog/${product.product_name_Id}`}
           className="product-card__title"
+          state={{ id: product.id }}
         >
           <h3 className={classNames(
             "product-card__h3",
-            {'product-card__h3--small': isSmall}
+            { 'product-card__h3--small': isSmall }
           )}>
-          {product.name}
+            {product.name}
           </h3>
         </Link>
         <p className={classNames(
           "product-card__price",
           { "product-card__price--small": isSmall }
         )}>
-          {`$${product.price}`}
+          ${product.price.toFixed(2)}
         </p>
       </div>
       <div className="product-card__buttons">
-        <button
-          className={classNames(
-            "button button--cart",
-            {
-              "button--cart--active": false,
-              "button--cart--small": isSmall,
-            }
-          )}
-        ></button>
+        <CartButton isSmall={isSmall} product={product} icon={true} />
         <Link
           to={`/catalog/${product.product_name_Id}`}
 
@@ -68,6 +48,7 @@ export const ProductCard: React.FC<Props> = ({ isSmall, product }) => {
             "button button--with-arrow button--white",
             { "button--small": isSmall }
           )}
+          state={{ id: product.id }}
         >
           More details
           <span

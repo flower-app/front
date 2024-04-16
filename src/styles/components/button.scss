@@ -19,7 +19,8 @@
     @include hover(border-color, $bg-color);
   }
 
-  &:active {
+  &:active,
+  &--active {
     background-color: $secondary-red;
     border-color: $secondary-red;
   }
@@ -94,7 +95,17 @@
       border-color: $main-red;
 
       &:hover {
-        background-color: $main-red;
+        background-color: $secondary-red;
+        background-image: url("../../img/icons/cart-white.svg");
+      }
+    }
+    &--not-active {
+      background-image: url("../../img/icons/cart.svg");
+      background-color: $bg-color;
+      border-color: $main-red;
+
+      &:hover {
+        background-color: $secondary-red;
         background-image: url("../../img/icons/cart-white.svg");
       }
     }

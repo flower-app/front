@@ -3,7 +3,7 @@
 .input {
   width: 100%;
   height: 56px;
-  padding: 15px 10px ;
+  padding: 15px 10px;
   outline: none;
   border: 1px solid $dark-pink;
   border-radius: 10px;
@@ -55,5 +55,9 @@
         border-color: $bg-color;
       }
     }
+  }
+
+  &--error {
+    border-color: red;
   }
 }

@@ -17,6 +17,13 @@
 @font-face {
   font-family: "Sedan SC";
   font-style: normal;
+  font-weight: 300;
+  src: local("Sedan SC"), url(./fonts/SedanSC-Regular.ttf),
+    format("truetype");
+}
+@font-face {
+  font-family: "Sedan SC";
+  font-style: normal;
   font-weight: 400;
   src: local("Sedan SC"), url(./fonts/SedanSC-Regular.ttf),
     format("truetype");

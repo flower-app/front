@@ -1,11 +1,7 @@
-import classNames from 'classnames';
-import React, { useContext } from 'react';
+import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
-import { PathnameContext } from './helpers/PathnameContext';
-
-// import './App.css';
 
 function App() {
 

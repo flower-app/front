@@ -17,9 +17,11 @@
   &__img-container {
     position: relative;
     height: 440px;
+    width: 390px;
 
     &--small {
       height: 298px;
+      width: 285px;
     }
   }
 
@@ -54,12 +56,6 @@
   &__summary {
     display: flex;
     justify-content: space-between;
-
-    // @extend %h3;
-
-    // &--small {
-    //   font-size: 24px;
-    // }
   }
 
   &__h3 {

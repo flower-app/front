@@ -1,7 +1,9 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { product } from '../../helpers/sample';
+import { getAllProducts, getProductsByProperty } from '../../helpers/api';
+import { ProductFromServer, PropertyType } from '../../helpers/types';
+import { Loader } from '../Loader';
 import { ProductCard } from '../ProductCard/ProductCard';
 import "./CategoryPreview.scss";
 
@@ -10,9 +12,31 @@ type Props = {
   title: string;
   margin: string;
   reverse: boolean;
+  propertyType?: PropertyType;
+  propertyId?: number;
 }
 
-export const CategoryPreview: React.FC<Props> = ({isFirstBlock, title, margin, reverse }) => {
+export const CategoryPreview: React.FC<Props> = ({ isFirstBlock, title, margin, reverse, propertyType, propertyId }) => {
+  const [productsFromServer, setProductsFromServer] = useState<ProductFromServer[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
+
+
+  useEffect(() => {
+    setHasError(false)
+    setIsLoading(true);
+    if (propertyType && propertyId) {
+      getProductsByProperty(propertyId, propertyType)
+        .then(setProductsFromServer)
+        .catch(() => setHasError(true))
+        .finally(() => setIsLoading(false))
+    } else {
+      getAllProducts()
+        .then(setProductsFromServer)
+        .catch(() => setHasError(true))
+        .finally(() => setIsLoading(false))
+    }
+  }, []);
 
   return (
     <div className="category-preview">
@@ -36,19 +60,36 @@ export const CategoryPreview: React.FC<Props> = ({isFirstBlock, title, margin, r
             { 'category-preview__content--reverse': reverse }
           )}
         >
+          {isLoading && <Loader />}
           <div
             className={classNames(
               "category-preview__gallery",
               { 'category-preview__gallery--reverse': reverse }
             )}
           >
-            <ProductCard product={product} />
-            <ProductCard isSmall={true} product={product} />
-            <ProductCard isSmall={true} product={product} />
+            {hasError
+              ? <p> Something went wrong </p>
+              : (<>
+                {productsFromServer
+                  .slice(0, 3)
+                  .map((currProduct, index) => {
+                    return (
+                      <React.Fragment key={currProduct.id}>
+                        {(index === 0)
+                          ? <ProductCard product={currProduct} />
+                          : <ProductCard isSmall={true} product={currProduct} />}
+                      </React.Fragment>
+                    )
+                  })
+                }
+              </>)}
           </div>
 
           <div className="category-preview__btn">
-            <Link to='catalog' className="button button--with-arrow">
+            <Link
+              to='/catalog'
+              className="button button--with-arrow"
+            >
               See catalog <span className="button__arrow"></span>
             </Link>
           </div>

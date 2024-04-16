@@ -18,7 +18,7 @@ export function AboutUsPage() {
           </div>
 
           <img
-            src="./img/about-us-1.jpg"
+            src="/img/about-us-1.jpg"
             alt="Women with fresh flowers in the shop"
             className="about-us-page__img"
           />
@@ -59,7 +59,6 @@ export function AboutUsPage() {
             <span className="about-us-page__benefit">Subscription Tailored to Your Needs: </span>Simplify your life with our customizable subscription service, designed to meet your specific preferences and schedule.
           </li>
         </ul>
-
       </article>
     </div>
   )
